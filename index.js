@@ -42,7 +42,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+
 app.use("/", require("./routes/index"));
+app.use("/auth", require("./routes/auth"));
 
 
 app.listen(port, () => {console.log(`Example app listening at http://localhost:${port}`);});
