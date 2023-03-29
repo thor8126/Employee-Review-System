@@ -10,6 +10,7 @@ const exphbs = require("express-handlebars");
 const logger = require("morgan");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const passport = require("passport");
 const router = express.Router();
 
 app.set("views", path.join(__dirname, "views"));
@@ -40,6 +41,9 @@ app.use(logger("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 
 

@@ -1,21 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-
-const { register } = require('../controllers/userController.js');
-
-const { isAuthenticated } = require('../config/isAuthenticated.js');
+const usersController = require('../controllers/userController.js');
 
 
+router.post('/register', usersController.register);
 
-
-router.post('/register', register);
-
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
+router.post('/login', usersController.login);
+  
+router.get('/logout', usersController.logout);
 
 
 
