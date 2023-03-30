@@ -34,11 +34,16 @@ const User = require('../models/User'); // import user model
 
   // Deserialize user
   passport.deserializeUser(function(id, done) {
+    //send only the user id to the client
     User.findById(id)
       .then((user) => {
-        done(null, user);
-      }
-    );
+        const data = { id: user.id, username:user.username, email: user.email, role: user.role };
+        done(null, data);
+      })
+      .catch((err) => {
+        done(err, null);
+      });
   });
 
+  
   module.exports = passport;

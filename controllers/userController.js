@@ -20,6 +20,7 @@ exports.register = async (req, res) => {
             username,
             email,
             password: passwordHash,
+            role:'user'
         });
         await newUser.save();
         res.redirect('/login')
