@@ -8,12 +8,12 @@ exports.register = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (user) {
-            return res.status(400).json({ msg: "The user already exists." });
+          console.log('User already exists')
+            return res.redirect('/login')
         }
         if (password.length < 6) {
-            return res
-                .status(400)
-                .json({ msg: "Password must be at least 6 characters." });
+          console.log('Password must be at least 6 characters.')
+            return res.redirect('/login')
         }
         const passwordHash = await bcrypt.hash(password, 10);
         const newUser = new User({
@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
             password: passwordHash,
         });
         await newUser.save();
-        res.json({ msg: "Registration successful!" });
+        res.redirect('/login')
     } catch (err) {
         return res.status(500).json({ msg: err.message });
     }
@@ -35,7 +35,7 @@ exports.login = function(req, res, next) {
     if (!user) { return res.send(info); }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.send(user);
+      return res.redirect('/')
     });
   })(req, res, next);
 };

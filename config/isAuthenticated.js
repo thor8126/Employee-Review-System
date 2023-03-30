@@ -1,11 +1,12 @@
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/User');
 
-module.exports.isAuthenticated = function (req, res, next) {
+function isAuthenticated(req, res, next) {
+    // Check whether user is authenticated here
     if (req.isAuthenticated()) {
-        return next();
+      return next(); // User is authenticated, allow request to proceed
+    } else {
+      res.redirect('/login'); // User is not authenticated, redirect to login page
     }
-    res.redirect('/login');
-}
+  }
+  
 
+module.exports = isAuthenticated;
