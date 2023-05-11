@@ -55,5 +55,5 @@ You can find more of my work at [Github](
 ![Demo](./public/assets/images/demo.gif)
 
 ## Deployed App
-[Employee Review System](https://employee-review-system.herokuapp.com/)
+[Employee Review System](https://ers-qs95.onrender.com/)
 
