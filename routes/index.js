@@ -1,27 +1,17 @@
+
 const express = require('express');
-const app = express();
 const router = express.Router();
-const isAuthenticated = require('../config/isAuthenticated')
+const passport = require('passport');
 
-router.get('/',isAuthenticated ,(req, res) => {
-    const data = req.user;
-    res.render('Home', { title: 'Home', layout: 'base1',data });
-  });
+const userController = require('../controllers/user_controller');
 
+router.get('/', passport.checkAuthentication, userController.home);
 
-router.get('/login', function(req, res) {
-    if(req.user){
-      res.redirect('/')
-    }
-    res.render('Login', { title: 'Login',layout:'base2' });
-  });
+router.use('/users', require('./user'));
 
-  router.get('/dashboard', isAuthenticated, (req, res) => {
-    const data = req.user;
-    res.render('Dashboard', { title: 'Dashboard', layout: 'base1',data });
-  });
-  
-  
+router.use('/admin', require('./admin'));
+
+router.use('/reviews', require('./review'));
 
 
 module.exports = router;

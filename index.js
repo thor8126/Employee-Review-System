@@ -1,54 +1,64 @@
-require('dotenv').config();
-require('./config/db');
+
 const express = require('express');
+const port =process.env.PORT || 8000;
 const app = express();
-const port = process.env.PORT;
-const path = require("path");
-const bodyParser = require("body-parser");
-const hbs = require("hbs");
-const exphbs = require("express-handlebars");
-const logger = require("morgan");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const passport = require("passport");
-const router = express.Router();
 
-app.set("views", path.join(__dirname, "views"));
+const expressLayouts = require('express-ejs-layouts');
 
-app.set("view engine", "hbs");
-app.engine(
-  "hbs",
-  exphbs.engine({
-    defaultLayout: "base1",
-    extname: ".hbs",
-    layoutsDir: path.join(__dirname, "views/layouts"),
-    partialsDir: path.join(__dirname, "views/partials"),
-  })
-  );
-  
+const db = require('./config/mongoose');
+
+// passport setup session cookie
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local');
+
+const MongoStore = require('connect-mongo');
+
+// for gettingform data
+app.use(express.urlencoded());
+
+// for static files
+app.use(express.static('./assets'));
+
+app.use(expressLayouts);
+
+
+// to render css file link in header
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
+
+// view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
+
+// middleware for use session cookie
 app.use(session({
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-  cookie: { maxAge: 60 * 60 * 1000,// 1 hour
-    secure: false,
-    httpOnly: false, 
-  }
+    name : 'habit-tracker',
+    secret : 'nothing',
+    saveUninitialized : false,
+    resave : false,
+    cookie : {
+        maxAge : (1000 * 60 * 100)
+    },
+    store:MongoStore.create({
+        mongoUrl: 'mongodb://localhost:27017/habit',
+        autoRemove : 'disabled',
+    }, function(err){
+        console.log(err || 'connect-mongodb setup');
+    }),
 }));
 
-app.use(logger("dev"));
-app.use(express.static(path.join(__dirname, "public")));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(passport.setAuthenticatedUser);
 
+app.use('/', require('./routes/index'));
 
-
-app.use("/", require("./routes/index"));
-app.use("/auth", require("./routes/auth"));
-
-
-app.listen(port, () => {console.log(`Example app listening at http://localhost:${port}`);});
+app.listen(port, function(err){
+    if(err){
+        console.log("Error while connecting to server");
+        return;
+    }
+    console.log(`Server running on port ${port}.`);
+});
