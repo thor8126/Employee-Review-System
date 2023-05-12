@@ -51,9 +51,3 @@ You can find more of my work at [Github](
     https://github.com/thor8126
     ).
 
-## Demo
-![Demo](./public/assets/images/demo.gif)
-
-## Deployed App
-[Employee Review System](https://ers-qs95.onrender.com/)
-
