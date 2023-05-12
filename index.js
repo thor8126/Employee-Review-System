@@ -15,7 +15,7 @@ const passportLocal = require('./config/passport-local');
 const MongoStore = require('connect-mongo');
 
 // for gettingform data
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:false}));
 
 // for static files
 app.use(express.static('./assets'));
