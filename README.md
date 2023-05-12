@@ -13,11 +13,11 @@ This is a simple employee review system that allows the user to add, view, and u
 
 1. To install necessary dependencies, run the following command:
 ```md
-npm i
+npm install
 ```
 2. Start the server by running the following command:
 ```md
-node server.js
+nodemon index.js
 ```
 Note: If you are facing issue with connecting to the database, then please change the value of the Mongoose.connect url to `mongodb://localhost:27017/employee_review_system` and then run the above command again.(But in this case you have to create a new user with isAdmin value set to true in the userController.js file)
 
@@ -26,7 +26,7 @@ Note: If you are facing issue with connecting to the database, then please chang
 4. Login to the App using the credentials below.(or u can create your own admin by changing the isAdmin value to true in the userController.js file for the first user you create)
 
 Admin Login:
-Email: `admin@gmail.com`
+Email: `admin@admin.com`
 Password: `admin`
 You can see the admin dashboard and add, view, and update employees.
 
